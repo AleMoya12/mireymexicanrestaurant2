@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   info,
   hero,
@@ -13,25 +14,48 @@ import {
 } from "./data";
 
 export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [zoom, setZoom] = useState(null);
+  const openZoom = (src, alt) => setZoom({ src, alt });
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <div className="site">
       {/* NAV */}
       <header className="nav">
         <div className="nav-inner">
           <div className="brand">
-            <img src={asset("/img/logo.png")} alt="Mi Rey" className="brand-logo" />
+            <img
+              src={asset("/img/logo.png")}
+              alt="Mi Rey"
+              className="brand-logo zoomable"
+              onClick={() => openZoom(asset("/img/logo.png"), "Mi Rey")}
+            />
             <span className="brand-name">
               MI REY <em>Taquería &amp; Grill</em>
             </span>
           </div>
-          <nav className="nav-links">
-            <a href="#menu">Menú</a>
-            <a href="#specials">Especiales</a>
-            <a href="#story">Historia</a>
-            <a href="#contact">Contacto</a>
+          <button
+            className="hamburger"
+            aria-label="Menu"
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+          <nav className={"nav-links" + (menuOpen ? " open" : "")}>
+            <a href="#menu" onClick={closeMenu}>Menu</a>
+            <a href="#specials" onClick={closeMenu}>Specials</a>
+            <a href="#story" onClick={closeMenu}>Story</a>
+            <a href="#contact" onClick={closeMenu}>Contact</a>
+            <a className="nav-order" href={`tel:${info.phoneHref}`} onClick={closeMenu}>
+              Order 🌮
+            </a>
           </nav>
           <a className="btn" href={`tel:${info.phoneHref}`}>
-            Ordenar 🌮
+            Order 🌮
           </a>
         </div>
       </header>
@@ -39,58 +63,68 @@ export default function Home() {
       {/* HERO */}
       <section className="hero">
         <div className="hero-left">
-          <p className="eyebrow">🌶️ Auténtica cocina mexicana · Wilmington, NC</p>
+          <p className="eyebrow">🌶️ Authentic Mexican cuisine · Wilmington, NC</p>
           <h1>
-            ¿Listo para <span className="hl">consentir</span> tu paladar?
+            Ready to <span className="hl">indulge</span> your taste buds?
           </h1>
           <p className="hero-text">{hero.text}</p>
           <div className="hero-cta">
             <a className="btn big" href={`tel:${info.phoneHref}`}>
-              {hero.cta} AHORA
+              {hero.cta} NOW
             </a>
             <a className="btn ghost" href="#menu">
-              Ver el menú
+              View menu
             </a>
           </div>
           <div className="hero-stats">
             <div>
               <strong>100%</strong>
-              <span>Recetas caseras</span>
+              <span>Homemade recipes</span>
             </div>
             <div>
               <strong>Jalisco</strong>
-              <span>Sabor auténtico</span>
+              <span>Authentic flavor</span>
             </div>
             <div>
-              <strong>Taquizas</strong>
-              <span>Para tus eventos</span>
+              <strong>Catering</strong>
+              <span>For your events</span>
             </div>
           </div>
         </div>
         <div className="hero-right">
-          <img src={asset("/img/chimichanga.png")} alt="Chimichanga con arroz" />
-          <div className="badge">¡Hecho con amor! ❤️</div>
+          <img
+            src={asset("/img/chimichanga.png")}
+            alt="Chimichanga with rice"
+            className="zoomable"
+            onClick={() => openZoom(asset("/img/chimichanga.png"), "Chimichanga with rice")}
+          />
+          <div className="badge">Made with love! ❤️</div>
         </div>
       </section>
 
       {/* STRIPE */}
       <div className="stripe">
         <span>TACOS</span>•<span>BIRRIA</span>•<span>FAJITAS</span>•
-        <span>MARGARITAS</span>•<span>TAQUIZAS</span>•<span>ALITAS</span>•
+        <span>MARGARITAS</span>•<span>CATERING</span>•<span>WINGS</span>•
         <span>TACOS</span>•<span>BIRRIA</span>•<span>FAJITAS</span>•
-        <span>MARGARITAS</span>•<span>TAQUIZAS</span>•<span>ALITAS</span>
+        <span>MARGARITAS</span>•<span>CATERING</span>•<span>WINGS</span>
       </div>
 
       {/* FEATURED */}
       <section className="featured" id="menu">
         <div className="head">
-          <h2>Platillos Destacados</h2>
-          <p>Del comal a tu mesa — recetas jaliscienses llenas de sabor.</p>
+          <h2>Featured Dishes</h2>
+          <p>From our grill to your table — Jalisco recipes full of flavor.</p>
         </div>
         <div className="gallery">
           {featured.map((img, i) => (
             <figure key={i} className={`card c-${i}`}>
-              <img src={img.src} alt={img.alt} />
+              <img
+                src={img.src}
+                alt={img.alt}
+                className="zoomable"
+                onClick={() => openZoom(img.src, img.alt)}
+              />
               <figcaption>{img.alt}</figcaption>
             </figure>
           ))}
@@ -100,8 +134,8 @@ export default function Home() {
       {/* SPECIALS */}
       <section className="specials" id="specials">
         <div className="head light">
-          <h2>Especiales del Día</h2>
-          <p>Una razón para volver cada día de la semana.</p>
+          <h2>Daily Specials</h2>
+          <p>A reason to come back every day of the week.</p>
         </div>
         <div className="specials-grid">
           {specials.map((s, i) => (
@@ -117,7 +151,7 @@ export default function Home() {
       {/* STORY */}
       <section className="story" id="story">
         <div className="story-body">
-          <span className="tag">Nuestra Historia</span>
+          <span className="tag">Our Story</span>
           <h2>{story.title}</h2>
           <p>{story.text}</p>
           <a className="btn" href="#menu">
@@ -125,15 +159,25 @@ export default function Home() {
           </a>
         </div>
         <div className="story-imgs">
-          <img src={asset("/img/tostada2.png")} alt="Tostada de birria" className="i1" />
-          <img src={asset("/img/spread.png")} alt="Mesa de platillos" className="i2" />
+          <img
+            src={asset("/img/tostada2.png")}
+            alt="Birria tostada"
+            className="i1 zoomable"
+            onClick={() => openZoom(asset("/img/tostada2.png"), "Birria tostada")}
+          />
+          <img
+            src={asset("/img/spread.png")}
+            alt="Table of dishes"
+            className="i2 zoomable"
+            onClick={() => openZoom(asset("/img/spread.png"), "Table of dishes")}
+          />
         </div>
       </section>
 
       {/* TESTIMONIALS */}
       <section className="testi">
         <div className="head">
-          <h2>Reseñas de nuestros clientes</h2>
+          <h2>Customer Reviews</h2>
         </div>
         <div className="testi-grid">
           {testimonials.map((t) => (
@@ -156,19 +200,19 @@ export default function Home() {
       <section className="contact" id="contact">
         <div className="contact-inner">
           <div className="contact-info">
-            <h2>Visítanos hoy</h2>
+            <h2>Visit us today</h2>
             <ul>
               <li>
                 <span>📍</span>
                 <div>
-                  <strong>Dirección</strong>
+                  <strong>Address</strong>
                   {info.address}
                 </div>
               </li>
               <li>
                 <span>📞</span>
                 <div>
-                  <strong>Teléfono</strong>
+                  <strong>Phone</strong>
                   <a href={`tel:${info.phoneHref}`}>{info.phone}</a>
                 </div>
               </li>
@@ -187,7 +231,7 @@ export default function Home() {
             </div>
           </div>
           <div className="contact-hours">
-            <h3>🕒 Horario</h3>
+            <h3>🕒 Hours</h3>
             <ul>
               {hours.map((h) => (
                 <li key={h.day}>
@@ -202,12 +246,36 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer className="footer">
-        <img src={asset("/img/logo.png")} alt="Mi Rey" />
+        <img
+          src={asset("/img/logo.png")}
+          alt="Mi Rey"
+          className="zoomable"
+          onClick={() => openZoom(asset("/img/logo.png"), "Mi Rey")}
+        />
         <p>© 2025 by Mi Rey Taquería and Grill · Wilmington, NC</p>
         <a href={`tel:${info.phoneHref}`} className="back">
-          Ordenar → {info.phone}
+          Order → {info.phone}
         </a>
       </footer>
+
+      {/* LIGHTBOX */}
+      {zoom && (
+        <div
+          className="lightbox"
+          onClick={() => setZoom(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <button
+            className="lightbox-close"
+            onClick={() => setZoom(null)}
+            aria-label="Close"
+          >
+            ×
+          </button>
+          <img src={zoom.src} alt={zoom.alt} onClick={(e) => e.stopPropagation()} />
+        </div>
+      )}
 
       <style jsx>{`
         .site {
@@ -247,6 +315,7 @@ export default function Home() {
           display: flex;
           align-items: center;
           gap: 1.5rem;
+          position: relative;
         }
         .brand {
           display: flex;
@@ -314,6 +383,29 @@ export default function Home() {
           background: var(--red);
           color: #fff;
           transform: none;
+        }
+        .nav-order {
+          display: none;
+        }
+        .hamburger {
+          display: none;
+          flex-direction: column;
+          justify-content: center;
+          gap: 5px;
+          width: 44px;
+          height: 42px;
+          background: transparent;
+          border: 2px solid var(--yellow);
+          border-radius: 10px;
+          cursor: pointer;
+          padding: 0 9px;
+        }
+        .hamburger span {
+          display: block;
+          height: 2px;
+          width: 100%;
+          background: #fff;
+          border-radius: 2px;
         }
 
         /* HERO */
@@ -747,9 +839,100 @@ export default function Home() {
           padding-bottom: 2px;
         }
 
+        /* ZOOMABLE IMAGES */
+        .zoomable {
+          cursor: zoom-in;
+        }
+
+        /* LIGHTBOX */
+        .lightbox {
+          position: fixed;
+          inset: 0;
+          z-index: 1000;
+          background: rgba(20, 8, 6, 0.92);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 4vw;
+          animation: fade 0.2s ease;
+          cursor: zoom-out;
+        }
+        .lightbox img {
+          max-width: 96vw;
+          max-height: 90vh;
+          width: auto;
+          height: auto;
+          border-radius: 14px;
+          border: 4px solid var(--yellow);
+          box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+          cursor: default;
+          animation: pop 0.22s ease;
+        }
+        .lightbox-close {
+          position: fixed;
+          top: 18px;
+          right: 22px;
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          border: none;
+          background: var(--yellow);
+          color: var(--red-deep);
+          font-size: 1.9rem;
+          line-height: 1;
+          font-weight: 700;
+          cursor: pointer;
+        }
+        @keyframes fade {
+          from {
+            opacity: 0;
+          }
+        }
+        @keyframes pop {
+          from {
+            transform: scale(0.9);
+            opacity: 0;
+          }
+        }
+
         @media (max-width: 860px) {
-          .nav-links {
+          .hamburger {
+            display: flex;
+          }
+          .btn {
             display: none;
+          }
+          .nav-links {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-left: 0;
+            flex-direction: column;
+            gap: 0;
+            background: var(--red-deep);
+            box-shadow: 0 12px 24px rgba(143, 26, 21, 0.4);
+            padding: 0.5rem 1.5rem 1rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+          }
+          .nav-links.open {
+            opacity: 1;
+            transform: none;
+            pointer-events: auto;
+          }
+          .nav-links a {
+            padding: 0.9rem 0;
+            font-size: 1.05rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+          }
+          .nav-order {
+            display: block;
+            color: var(--yellow) !important;
+            font-weight: 700;
+            border-bottom: none !important;
           }
           .hero {
             grid-template-columns: 1fr;

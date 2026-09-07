@@ -9,6 +9,7 @@ import {
   testimonials,
   hours,
   social,
+  asset,
 } from "./data";
 
 export default function Home() {
@@ -18,7 +19,7 @@ export default function Home() {
       <header className="nav">
         <div className="nav-inner">
           <div className="brand">
-            <img src="/img/logo.png" alt="Mi Rey" className="brand-logo" />
+            <img src={asset("/img/logo.png")} alt="Mi Rey" className="brand-logo" />
             <span className="brand-name">
               MI REY <em>Taquería &amp; Grill</em>
             </span>
@@ -67,7 +68,7 @@ export default function Home() {
           </div>
         </div>
         <div className="hero-right">
-          <img src="/img/chimichanga.png" alt="Chimichanga con arroz" />
+          <img src={asset("/img/chimichanga.png")} alt="Chimichanga con arroz" />
           <div className="badge">¡Hecho con amor! ❤️</div>
         </div>
       </section>
@@ -124,8 +125,8 @@ export default function Home() {
           </a>
         </div>
         <div className="story-imgs">
-          <img src="/img/tostada2.png" alt="Tostada de birria" className="i1" />
-          <img src="/img/spread.png" alt="Mesa de platillos" className="i2" />
+          <img src={asset("/img/tostada2.png")} alt="Tostada de birria" className="i1" />
+          <img src={asset("/img/spread.png")} alt="Mesa de platillos" className="i2" />
         </div>
       </section>
 
@@ -201,7 +202,7 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer className="footer">
-        <img src="/img/logo.png" alt="Mi Rey" />
+        <img src={asset("/img/logo.png")} alt="Mi Rey" />
         <p>© 2025 by Mi Rey Taquería and Grill · Wilmington, NC</p>
         <a href={`tel:${info.phoneHref}`} className="back">
           Ordenar → {info.phone}
